@@ -10,9 +10,6 @@ import java.util.StringTokenizer;
  */
 public class StringUtil {
 
-	// private static Logger logger =
-	// LoggerFactory.getLogger(StringUtils.class);
-
 	public static String toString(Object o) {
 		if (o != null)
 			return o.toString();
