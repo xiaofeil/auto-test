@@ -1,0 +1,161 @@
+/*===================xr==================*/
+/*---------------------header----------------------*/
+.xr-header{
+	background: #563d7c;
+	color: #fff;
+}
+.xr-header .container{
+	padding-left: 67px;
+	background:url('../image/logo.jpg') no-repeat center left transparent;
+}
+/*---------------------content---------------------*/
+.xr-content{
+	width: 95%;
+    margin: 0 auto;
+    margin-top: 80px;
+}
+.xr-left-nav{
+	min-height: 300px;
+	width: 185px;
+}
+.xr-right-operation{
+	background: #eee;
+    padding: 4px;
+    border-radius: 5px;
+}
+.xr-right-content{
+	/*min-height: 350px;*/
+	overflow: auto;
+	padding: 30px 0px;
+}
+/*=====================create meetting=========================*/
+.submeetingWrap{
+	position: relative;
+}
+.submeetingWrap .showOrHide{
+	display: none;
+}
+.submeetingWrap.showMore{
+	height: 50px;
+	overflow: hidden;
+	
+}
+.submeetingWrap .showOrHide{
+	display: block;
+	position: absolute;
+    right: 20px;
+    top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 99;
+}
+.submeetingWrap .words-split{
+	vertical-align: middle;
+}
+.submeetingWrap .words-split-add{
+	font-size: 24px;
+}
+.submeetingWrap a:hover{
+	text-decoration: none;
+}
+.submeetingWrap .words-split a{
+	display: inline-block;
+    padding: 0 20px 0 8px;
+    position: relative;
+    margin: 4px 4px;
+}
+.submeetingWrap .words-split a:hover em{
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+}
+.submeetingWrap .words-split a em{
+	display: none;
+    width: 16px;
+    height: 100%;
+    position: absolute;
+    background: #f60;
+    right: 0;
+    top: 0;
+}
+.submeetingWrap .words-split a em:after{ 
+	content: "-"; 
+	color: #fff; 
+	font: bold 20px 'Microsoft Yahei';
+}
+.submeetingWrap .words-split .fm-button{
+	display: inline-block;
+    text-align: left;
+    color: #fff;
+    line-height: 28px;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    opacity: .9;
+    filter: alpha(opacity=90);
+    background: #2cac93;
+    word-break: break-all;
+}
+.submeetingWrap .lbl-input{
+	display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+}
+
+/*******************************login page*********************************/
+.form-signin{
+	max-width: 400px;
+	padding: 15px;
+	margin: 20px auto;
+}
+
+/*==================================edit meeting=========================*/
+#meetingRela{
+	display: none;
+}
+.xr-propList{
+	margin: 20px;
+}
+.xr-propList .selected{
+	color: #5CA2FB;
+}
+.xr-propList input{
+	margin: 0 10px;
+}
+/*=======================================send email==============================*/
+.send-emails .xr-right-content{
+	padding-bottom: 10px;
+}
+.tinymceContainer{
+	width: 900px;
+	margin: 0 auto;
+}
+.tinymceContainer .authButton{
+	display: none;
+}
+/*=============================================reset bootstrap==================================*/
+.form-horizontal .form-group{
+	margin-left: 0;
+	margin-right: 0;
+}
+
+/*============================Ȩ�ް�ť����==========================*/
+.xr-left-nav .nav li a{
+	display: none;
+}
+.xr-content button{
+	display:none;
+}

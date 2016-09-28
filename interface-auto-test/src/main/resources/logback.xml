@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<!-- logback输出的日志文件，默认会放到“启动进程”的目录下面 -->
+	<!-- 比如说程序直接在eclipse里跑，就会输出到eclipse.exe所在的目录下，如果是在tomcat中跑，就会输出到%TOMCAT_HOME%/bin目录下 -->
+	<!-- 可以用绝对路径或者相对路径的方式，配置日志文件的位置 -->
+	<!-- 绝对路径：/opt/xxx/log/logFile.%d{yyyy-MM-dd}.log -->
+	<!-- 相对路径： opt/xxx/log/logFile.%d{yyyy-MM-dd}.log -->
+	<property name="log.base" value="/opt/logs/interface-auto-test/" />
+	<property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%level] [%C.java:%L]- %msg%n" />
+	
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder charset="UTF-8">
+			<pattern>${pattern}</pattern>
+			<outputPatternAsHeader>false</outputPatternAsHeader>
+		</encoder>
+	</appender>
+	
+	<appender name="log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.base}/log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/log.%d{yyyyMMddHH}</fileNamePattern>
+		</rollingPolicy>
+		<encoder charset="UTF-8">
+			<pattern>${pattern}</pattern>
+			<outputPatternAsHeader>false</outputPatternAsHeader>
+		</encoder>
+	</appender>
+
+	<appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.base}/error</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/error.%d{yyyyMMddHH}</fileNamePattern>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>error</level>
+		</filter>
+		<encoder charset="UTF-8">
+			<pattern>${pattern}</pattern>
+			<outputPatternAsHeader>false</outputPatternAsHeader>
+		</encoder>
+	</appender>
+	<logger name="com" level="info">
+		<appender-ref ref="log" />
+	</logger>
+
+<!-- 级别排序为： TRACE < DEBUG < INFO < WARN < ERROR。 -->
+	<root level="info">
+		<appender-ref ref="stdout" />
+		<appender-ref ref="error" />
+	</root>
+
+</configuration>

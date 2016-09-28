@@ -1,0 +1,80 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Xuanru.Niu's auto test</display-name>
+    <!-- 防止tomcat项目间param名冲突 -->
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>interface-auto-test.root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <!-- 		<param-value>WEB-INF/config/applicationContext.xml</param-value> -->
+        <param-value>classpath:spring-config.xml</param-value>
+    </context-param>
+
+    <!-- logback start -->
+    <context-param>
+        <param-name>logbackConfigLocation</param-name>
+        <!-- 		<param-value>WEB-INF/config/logback.xml</param-value> classpath是指 WEB-INF文件夹下的classes目录 -->
+        <param-value>classpath:logback.xml</param-value> <!-- classpath是指 WEB-INF文件夹下的classes目录 -->
+    </context-param>
+    <listener>
+        <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+    </listener>
+    <!-- logback end -->
+
+    <!-- spring MVC start -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <servlet-class>com.xuanru.servlet.EncodingDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <!-- 			<param-value>WEB-INF/config/applicationContext.xml</param-value> -->
+            <param-value>classpath:spring-config.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <!-- URL映射 -->
+    <servlet-mapping>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <!-- spring MVC end -->
+    <filter>
+        <filter-name>SystemFilter</filter-name>
+        <filter-class>com.xuanru.filter.SystemFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>SystemFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <session-config>
+        <session-timeout>15</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/login.jsp</welcome-file>
+    </welcome-file-list>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/WEB-INF/login.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/login.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/login.jsp</location>
+    </error-page>
+</web-app>
