@@ -13,6 +13,8 @@ import java.io.File;
  */
 public class Constants {
 
+	public static final String CHARSET_UTF_8 = "UTF-8";
+
 	public static final String SUCCESS = "0000";
 
 	public static final String FAIL = "-1000";

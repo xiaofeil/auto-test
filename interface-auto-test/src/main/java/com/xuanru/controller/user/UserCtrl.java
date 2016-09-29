@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,14 +27,30 @@ public class UserCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(LoginFormDto loginBo, ModelMap model, HttpServletRequest request) {
+	@ResponseBody
+	public LoginFormDto login(LoginFormDto loginBo, ModelMap model, HttpServletRequest request) {
 		logger.info("username=" + loginBo.getUsername());
 		if ("test".equals(loginBo.getUsername()) && "111111".equals(loginBo.getPwd())) {
-			return "redirect:upload";
+//			return "redirect:upload";
+			return loginBo;
 		} else {
 			model.put("username", loginBo.getUsername());
 			model.put("errMsg", "用户名或密码错误");
-			return "login";
+			return loginBo;
+		}
+	}
+
+	@RequestMapping(value = "/test/put", method = RequestMethod.PUT)
+	@ResponseBody
+	public LoginFormDto put(LoginFormDto loginBo, ModelMap model, HttpServletRequest request) {
+		logger.info("username=" + loginBo.getUsername());
+		if ("test".equals(loginBo.getUsername()) && "111111".equals(loginBo.getPwd())) {
+//			return "redirect:upload";
+			return loginBo;
+		} else {
+			model.put("username", loginBo.getUsername());
+			model.put("errMsg", "用户名或密码错误");
+			return loginBo;
 		}
 	}
 
