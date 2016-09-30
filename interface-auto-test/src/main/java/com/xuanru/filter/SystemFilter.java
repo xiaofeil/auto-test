@@ -18,26 +18,23 @@ import java.io.IOException;
  */
 public class SystemFilter extends OncePerRequestFilter {
 
-	private static final Logger logger = LoggerFactory.getLogger(SystemFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(SystemFilter.class);
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-			FilterChain filterChain) throws ServletException, IOException {
-		// 请求的uri
-		String url = request.getRequestURI();
-		String token = (String) request.getSession().getAttribute("token");
-		Integer user_id = (Integer) request.getSession().getAttribute("user_id");
-		logger.info("request url=[{}],user_id=[{}],token=[{}]",
-				new Object[] { url, user_id, token });
-		if (!"/interface-auto-test/".equals(url) && url.indexOf("login") == -1
-				&& url.indexOf("/css/") == -1 && url.indexOf("/js/") == -1
-				&& url.indexOf("/image/") == -1 && url.indexOf("favicon") != -1) {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        // 请求的uri
+        String url = request.getRequestURI();
+        logger.info("request url=[{}]", new Object[]{url});
+        if (!"/interface-auto-test/".equals(url) && url.indexOf("login") == -1
+                && url.indexOf("/css/") == -1 && url.indexOf("/js/") == -1
+                && url.indexOf("/image/") == -1 && url.indexOf("favicon") != -1) {
 //			if (StringUtil.isIntegerBlank(user_id)) {
 //				response.sendRedirect("/cdrf-meeting/login");
 //				return;
 //			}
 
-		}
-		filterChain.doFilter(request, response);
-	}
+        }
+        filterChain.doFilter(request, response);
+    }
 }

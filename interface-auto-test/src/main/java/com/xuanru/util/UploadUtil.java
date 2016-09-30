@@ -24,6 +24,7 @@ public class UploadUtil {
 				return "上传文件格式不正确";
 			}
 			File dir = new File(Constants.EXCLE_UPLOAD_PATH);
+			logger.info("dir path:{}",Constants.EXCLE_UPLOAD_PATH);
 			if (!dir.exists()) {
 				boolean mkdirFlag = dir.mkdir();
 				logger.info("mkdirFlag=" + mkdirFlag);

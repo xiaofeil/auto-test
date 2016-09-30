@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -21,8 +22,8 @@ if(errMsg != null && errMsg != ""){
 		<form class="form-signin" role="form" action="login" method="post">
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<input name="username" type="text" class="form-control"
-				placeholder="请输入用户名" value="" required autofocus> <p>
-			<input type="password"  name="pwd" value="" class="form-control" placeholder="请输入密码" required><br>
+				placeholder="请输入用户名" value="test" required autofocus> <p>
+			<input type="password"  name="pwd" value="111111" class="form-control" placeholder="请输入密码" required><br>
 <!-- 			<label class="checkbox"> <input type="checkbox" -->
 <!-- 				value="remember-me"> 记住我 </label> -->
 			<button class="btn btn-lg btn-primary btn-block" type="submit">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>

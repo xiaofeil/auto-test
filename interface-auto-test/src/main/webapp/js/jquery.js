@@ -20,21 +20,6 @@
 
 //some gloable function
 $(document).ready(function(){
-	//reset auth list
-	for(var i=0;i<authList.length;i++){
-		//设置menu
-		$("#" + authList[i].node_url).css('display','block');
-		//设置button
-		var buttonList = authList[i].btnList;
-		for(var j=0;j<buttonList.length;j++){
-			if(buttonList[j].isClass){
-				$("." + buttonList[j].btnId).show();
-			}else{
-				$("#" + buttonList[j].btnId).show();
-			}
-		}
-	}
-	
 	//通用form提交非空验证
 	$("form").each(function(index,ele){
 		var form = $(ele);

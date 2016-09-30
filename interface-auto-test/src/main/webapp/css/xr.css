@@ -144,7 +144,7 @@
 	margin: 0 auto;
 }
 .tinymceContainer .authButton{
-	display: none;
+	/*display: none;*/
 }
 /*=============================================reset bootstrap==================================*/
 .form-horizontal .form-group{
@@ -154,8 +154,8 @@
 
 /*============================Ȩ�ް�ť����==========================*/
 .xr-left-nav .nav li a{
-	display: none;
+	/*display: none;*/
 }
 .xr-content button{
-	display:none;
+	/*display:none;*/
 }

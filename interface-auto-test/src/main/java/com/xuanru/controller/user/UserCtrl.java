@@ -27,16 +27,14 @@ public class UserCtrl {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
-	public LoginFormDto login(LoginFormDto loginBo, ModelMap model, HttpServletRequest request) {
+	public String login(LoginFormDto loginBo, ModelMap model, HttpServletRequest request) {
 		logger.info("username=" + loginBo.getUsername());
 		if ("test".equals(loginBo.getUsername()) && "111111".equals(loginBo.getPwd())) {
-//			return "redirect:upload";
-			return loginBo;
+			return "redirect:listall";
 		} else {
 			model.put("username", loginBo.getUsername());
 			model.put("errMsg", "用户名或密码错误");
-			return loginBo;
+			return "login";
 		}
 	}
 

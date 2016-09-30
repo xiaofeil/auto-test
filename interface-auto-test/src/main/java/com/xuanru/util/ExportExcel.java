@@ -62,7 +62,7 @@ public class ExportExcel<T> {
 			// 生成一个表格
 			XSSFSheet sheet = workbook.createSheet(title);
 			// 设置表格默认列宽度为15个字节
-			sheet.setDefaultColumnWidth((short) 15);
+			sheet.setDefaultColumnWidth((short) 20);
 			// 生成一个样式
 			XSSFCellStyle style = workbook.createCellStyle();
 			// 设置这些样式
