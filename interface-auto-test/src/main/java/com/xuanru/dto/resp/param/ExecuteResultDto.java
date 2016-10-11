@@ -20,6 +20,8 @@ public class ExecuteResultDto extends BaseRespDto {
 
     private String error_msg;
 
+    private String actual_result; // 实际返回结果
+
     public String getUrl() {
         return url;
     }
@@ -74,5 +76,13 @@ public class ExecuteResultDto extends BaseRespDto {
 
     public void setError_msg(String error_msg) {
         this.error_msg = error_msg;
+    }
+
+    public String getActual_result() {
+        return actual_result;
+    }
+
+    public void setActual_result(String actual_result) {
+        this.actual_result = actual_result;
     }
 }

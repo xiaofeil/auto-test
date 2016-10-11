@@ -47,9 +47,9 @@
 			<div class="col-md-2">
 				<div class="xr-left-nav bs-sidebar affix">
 					<ul class="nav nav-pills nav-stacked">
-						<li  class="active"><a href="javascript:void(0);" id="meeting_menu">会议管理</a></li>
-						<li><a href="javascript:void(0);" id="member_menu">人员管理</a></li>
-						<li><a href="javascript:void(0);" id="setting_menu">权限设置</a></li>
+						<li  class="active"><a href="javascript:void(0);" id="meeting_menu">脚本管理</a></li>
+						<%--<li><a href="javascript:void(0);" id="member_menu">人员管理</a></li>--%>
+						<%--<li><a href="javascript:void(0);" id="setting_menu">权限设置</a></li>--%>
 					</ul>
 				</div>
 
@@ -78,7 +78,7 @@
 							<thead>
 								<tr>
 									<td>序号</td>
-									<td>配置文件名称</td>
+									<td>脚本文件名称</td>
 									<td>操作</td>
 								</tr>
 							</thead>
@@ -194,7 +194,7 @@
 				$('#myModal').modal('hide');
 			}
 			
-			function deleteMeeting(id){
+			function deleteMeeting(fileName){
 				//showModal("处理中。。。");
 				//todo ajax delete meeting
 				var formEle = document.createElement("form");
@@ -202,9 +202,9 @@
 				var inputEle = document.createElement("input");
 				inputEle.type = "hidden";
 				formEle.appendChild(inputEle);
-				inputEle.name = "id";
-				inputEle.value = id;
-				formEle.action = "deleteMeeting";
+				inputEle.name = "fileName";
+				inputEle.value = fileName;
+				formEle.action = "deleteFile";
 				formEle.method = "post";
 				formEle.submit();
 			}

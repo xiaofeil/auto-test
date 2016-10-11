@@ -36,9 +36,9 @@
 			<div class="col-md-2">
 				<div class="xr-left-nav bs-sidebar affix">
 					<ul class="nav nav-pills nav-stacked">
-						<li  class="active"><a href="javascript:void(0);" id="meeting_menu">会议管理</a></li>
-						<li><a href="javascript:void(0);" id="member_menu">人员管理</a></li>
-						<li><a href="javascript:void(0);" id="setting_menu">权限设置</a></li>
+						<li  class="active"><a href="javascript:void(0);" id="meeting_menu">脚本管理</a></li>
+						<%--<li><a href="javascript:void(0);" id="member_menu">人员管理</a></li>--%>
+						<%--<li><a href="javascript:void(0);" id="setting_menu">权限设置</a></li>--%>
 					</ul>
 				</div>
 

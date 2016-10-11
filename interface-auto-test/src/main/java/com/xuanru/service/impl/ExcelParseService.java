@@ -82,6 +82,7 @@ public class ExcelParseService implements IExcelParseService {
                     executeResultDto.setPass_flag(ParseExcelUtil.getValue(hssfRow.getCell(4)));
                     executeResultDto.setStatus_code(ParseExcelUtil.getValue(hssfRow.getCell(5)));
                     executeResultDto.setError_msg(ParseExcelUtil.getValue(hssfRow.getCell(6)));
+                    executeResultDto.setActual_result(ParseExcelUtil.getValue(hssfRow.getCell(7)));
                     executeResultDtos.add(executeResultDto);
                 } else {
                     log.info("hssfRow is null.rowNum=[{}]", rowNum);
@@ -135,6 +136,7 @@ public class ExcelParseService implements IExcelParseService {
                     executeResultDto.setPass_flag(ParseExcelUtil.getValue(xssfRow.getCell(4)));
                     executeResultDto.setStatus_code(ParseExcelUtil.getValue(xssfRow.getCell(5)));
                     executeResultDto.setError_msg(ParseExcelUtil.getValue(xssfRow.getCell(6)));
+                    executeResultDto.setActual_result(ParseExcelUtil.getValue(xssfRow.getCell(7)));
                     executeResultDtos.add(executeResultDto);
                 } else {
                     log.info("hssfRow is null.rowNum=[{}]", rowNum);

@@ -12,10 +12,7 @@ import com.xuanru.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
@@ -62,6 +59,15 @@ public class ParamCtrl {
                 }
             }
         }
+
+        Collections.sort(fileDtoList, new Comparator<ParamFileDto>() {
+            @Override
+            public int compare(ParamFileDto o1, ParamFileDto o2) {
+                String time1 = o1.getFileName().substring(o1.getFileName().indexOf("_") + 1, o1.getFileName().lastIndexOf(Constants.POINT));
+                String time2 = o2.getFileName().substring(o2.getFileName().indexOf("_") + 1, o2.getFileName().lastIndexOf(Constants.POINT));
+                return time2.compareTo(time1);
+            }
+        });
         model.put("fileDtoList", fileDtoList);
         return "param/listall";
     }
@@ -120,15 +126,42 @@ public class ParamCtrl {
                 // 解析excel文件
                 executeResultDtos = excelParseService.pareseResultFile(resultFileName);
             } else {
-                model.put("errMsg", "脚本还未执行，没有结果文件");
-                return "param/listall";
+                model.put("errMsg", "\\u811a\\u672c\\u8fd8\\u672a\\u6267\\u884c\\uff0c\\u6ca1\\u6709\\u7ed3\\u679c\\u6587\\u4ef6"); // 脚本还未执行，没有结果文件
+                return "redirect:listall";
             }
         } else {
-            model.put("errMsg", fileName + "文件不存在");
-            return "param/listall";
+            model.put("errMsg", fileName + "\\u6587\\u4ef6\\u4e0d\\u5b58\\u5728");
+            return "redirect:listall";
         }
         model.put("executeResultDtos", executeResultDtos);
-        return "param/param_edit";
+        return "redirect:listall";
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param
+     * @return
+     * @Author Liaoxf
+     * @Date 2016-09-30 17:32
+     */
+    @RequestMapping(value = "/deleteFile", method = RequestMethod.POST)
+    public String deleteFile(String fileName, ModelMap model,
+                             HttpServletRequest request) {
+        log.info("deleteFile {}  ", fileName);
+        File file = new File(Constants.EXCLE_UPLOAD_PATH + fileName);
+        String resultFileName = fileName.substring(0, fileName.indexOf(".")) + "_result"
+                + fileName.substring(fileName.indexOf("."));
+        File resultFile = new File(Constants.EXCLE_UPLOAD_PATH + resultFileName);
+        if (resultFile.exists()) {
+            resultFile.delete();
+        }
+        if (file.exists()) {
+            file.delete();
+        }
+
+        model.put("errMsg", fileName + "\\u5220\\u9664\\u6210\\u529f");
+        return "redirect:listall";
     }
 
     /**
@@ -169,34 +202,41 @@ public class ParamCtrl {
                     if (netResponse != null) {
                         log.info("result:" + JSONObject.toJSONString(netResponse));
                         resultDto.setStatus_code(new Integer(netResponse.getStatusCode()).toString());
+                        resultDto.setActual_result(netResponse.getRespContent());
                         if (netResponse.isSuccess()) {
                             resultDto.setPass_flag(Constants.SUCCESS);
                             expectResult = scriptDto.getExpect_result();
-                            Map<String, String> expectMap = null;
+                            Map<String, String> expectMap = null; // 预期结果json键值对
                             if (StringUtil.isNotBlank(expectResult)) {
-                                expectMap = transferParams(expectResult);
-                                if (expectMap.size() > 0) {
-                                    Map resultMap = new HashMap();
-                                    analysisJson(JSONObject.toJSON(netResponse), resultMap);
-                                    // 判断实际结果与期望结果是否匹配
-                                    Iterator<Map.Entry<String, String>> iter = expectMap.entrySet().iterator();
-                                    int count = 0;
-                                    while (iter.hasNext()) {
-                                        Map.Entry entry = iter.next();
-                                        if (resultMap.containsKey(entry.getKey())) {
-                                            count++;
-                                            try {
-                                                String truthResult = (String) resultMap.get(entry.getKey());
-                                                if (!entry.getValue().equals(truthResult))
-                                                    resultDto.setPass_flag(Constants.FAIL);
-                                            } catch (Exception e) {
-                                                log.error("接口实际返回结果非字符串");
+                                if (!expectResult.contains("=")) { // 预期结果非json键值对，直接对比返回值是否相等
+                                    if (!expectResult.trim().equals(netResponse.getRespContent().trim())) {
+                                        resultDto.setPass_flag(Constants.FAIL);
+                                    }
+                                } else {
+                                    expectMap = transferParams(expectResult);
+                                    if (expectMap.size() > 0) {
+                                        Map resultMap = new HashMap();
+                                        analysisJson(JSONObject.toJSON(netResponse), resultMap);
+                                        // 判断实际结果与期望结果是否匹配
+                                        Iterator<Map.Entry<String, String>> iter = expectMap.entrySet().iterator();
+                                        int count = 0;
+                                        while (iter.hasNext()) {
+                                            Map.Entry entry = iter.next();
+                                            if (resultMap.containsKey(entry.getKey())) {
+                                                count++;
+                                                try {
+                                                    String truthResult = (String) resultMap.get(entry.getKey());
+                                                    if (!entry.getValue().equals(truthResult))
+                                                        resultDto.setPass_flag(Constants.FAIL);
+                                                } catch (Exception e) {
+                                                    log.error("接口实际返回结果非字符串");
+                                                }
                                             }
                                         }
-                                    }
-                                    // 实际结果中没有预期结果中的key
-                                    if (count != expectMap.size() && Constants.SUCCESS.equals(resultDto.getPass_flag())) {
-                                        resultDto.setPass_flag(Constants.FAIL);
+                                        // 实际结果中没有预期结果中的key
+                                        if (count != expectMap.size() && Constants.SUCCESS.equals(resultDto.getPass_flag())) {
+                                            resultDto.setPass_flag(Constants.FAIL);
+                                        }
                                     }
                                 }
                             }
@@ -214,19 +254,19 @@ public class ParamCtrl {
                 File outFile = new File(Constants.EXCLE_UPLOAD_PATH + resultFileName);
                 OutputStream ouputStream = new FileOutputStream(outFile);
                 ExportExcel<ExecuteResultDto> export = new ExportExcel<ExecuteResultDto>();
-                String headers[] = new String[]{"URL", "参数", "请求方式", "期望结果", "是否成功", "HTTP返回码", "异常描述"};
+                String headers[] = new String[]{"URL", "参数", "请求方式", "期望结果", "是否成功", "HTTP返回码", "异常描述", "接口实际返回结果"};
 
                 export.exportExcel(DateUtil.dateToStrByTemplate(new Date(), Constants.DATE_TEMPLATE), headers, resultDtos, ouputStream, null);
             } else {
-                model.put("errMsg", fileName + "文件不存在");
-                return "param/listall";
+                model.put("errMsg", fileName + "\\u6587\\u4ef6\\u4e0d\\u5b58\\u5728"); // 文件不存在
+                return "redirect:listall";
             }
         } catch (Exception e) {
             log.error("", e);
         }
 
-        model.put("errMsg", "执行完毕");
-        return "param/listall";
+        model.put("errMsg", "\\u6267\\u884c\\u5b8c\\u6bd5"); // 执行完毕
+        return "redirect:listall";
     }
 
     public void analysisJson(Object objJson, Map map) {
@@ -302,7 +342,7 @@ public class ParamCtrl {
                 // 解析excel文件
                 executeResultDtos = excelParseService.pareseResultFile(fileName);
             } else {
-                model.put("errMsg", fileName + "文件不存在");
+                model.put("errMsg", fileName + "\\u6587\\u4ef6\\u4e0d\\u5b58\\u5728"); // 文件不存在
                 return;
             }
             String expName = "auto-test";
@@ -337,12 +377,17 @@ public class ParamCtrl {
             response.setHeader("Content-disposition", "attachment;" + filename + ".xlsx");
             OutputStream ouputStream = response.getOutputStream();
             ExportExcel<ExecuteResultDto> export = new ExportExcel<ExecuteResultDto>();
-            String headers[] = new String[]{"URL", "参数", "请求方式", "期望结果", "是否成功", "HTTP返回码", "异常描述"};
+            String headers[] = new String[]{"URL", "参数", "请求方式", "期望结果", "是否成功", "HTTP返回码", "异常描述", "接口实际返回结果"};
 
             export.exportExcel(expName, headers, executeResultDtos, ouputStream, null);
         } catch (Exception e) {
             log.error("", e);
             model.put("errMsg", e.getMessage());
         }
+    }
+
+    @ExceptionHandler
+    public void exp(Exception ex) {
+        log.error("", ex);
     }
 }
