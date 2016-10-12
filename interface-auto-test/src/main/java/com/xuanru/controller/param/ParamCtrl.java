@@ -49,6 +49,8 @@ public class ParamCtrl {
             File[] files = file.listFiles();
             ParamFileDto paramFileDto = null;
             for (int i = 0; i < files.length; i++) {
+                if (files[i].getName().indexOf("_result") != -1)
+                    continue;
                 String postfix = ParseExcelUtil.getPostfix(files[i].getName());
                 if (Constants.OFFICE_EXCEL_2003_POSTFIX.equals(postfix)
                         || Constants.OFFICE_EXCEL_2010_POSTFIX.equals(postfix)) {
@@ -134,7 +136,7 @@ public class ParamCtrl {
             return "redirect:listall";
         }
         model.put("executeResultDtos", executeResultDtos);
-        return "redirect:listall";
+        return "param/param_edit";
     }
 
     /**
@@ -269,7 +271,7 @@ public class ParamCtrl {
         return "redirect:listall";
     }
 
-    public void analysisJson(Object objJson, Map map) {
+    public static void analysisJson(Object objJson, Map map) {
         //如果obj为json数组
         if (objJson instanceof JSONArray) {
             JSONArray objArray = (JSONArray) objJson;
@@ -279,25 +281,50 @@ public class ParamCtrl {
         }
         //如果为json对象
         else if (objJson instanceof JSONObject) {
-            JSONObject jsonObject = (JSONObject) objJson;
-            Iterator it = jsonObject.keySet().iterator();
-            while (it.hasNext()) {
-                String key = it.next().toString();
-                Object object = jsonObject.get(key);
-                //如果得到的是数组
-                if (object instanceof JSONArray) {
-                    JSONArray objArray = (JSONArray) object;
-                    analysisJson(objArray, map);
-                }
-                //如果key中是一个json对象
-                else if (object instanceof JSONObject) {
-                    analysisJson((JSONObject) object, map);
-                }
-                //如果key中是其他
-                else {
-                    map.put(key, object);
-                }
-            }
+            toHashMap(objJson, map);
+//            JSONObject jsonObject = (JSONObject) objJson;
+//            Iterator it = jsonObject.keySet().iterator();
+//            while (it.hasNext()) {
+//                String key = it.next().toString();
+//                Object object = jsonObject.get(key);
+//                //如果得到的是数组
+//                if (object instanceof JSONArray) {
+//                    JSONArray objArray = (JSONArray) object;
+//                    analysisJson(objArray, map);
+//                }
+//                //如果key中是一个json对象
+//                else if (object instanceof JSONObject) {
+////                    analysisJson((JSONObject) object, map);
+//                    toHashMap(object, map);
+//                }
+//                //如果key中是其他
+//                else {
+//                    map.put(key, object);
+//                }
+//            }
+        }
+    }
+
+    private static void toHashMap(Object object, Map map) {
+        // 将json字符串转换成jsonObject
+        net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(object);
+        Iterator it = jsonObject.keys();
+        // 遍历jsonObject数据，添加到Map对象
+        while (it.hasNext()) {
+            String key = String.valueOf(it.next());
+            Object value = jsonObject.get(key);
+            map.put(key, value);
+        }
+    }
+
+    public static void main(String[] args) {
+        String json = "{\"respContent\":\"{\"data\":{\"firstInvest\":[{\"fundCode\":\"400009\",\"fundName\":\"东方稳健回报债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":5.09},{\"fundCode\":\"400013\",\"fundName\":\"东方保本混合型基金\",\"invstTypeMark\":\"保本型\",\"minAmount\":100,\"oneYear\":6.42}],\"steadyIncome\":[{\"fundCode\":\"400030\",\"fundName\":\"东方添益债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":10.71},{\"fundCode\":\"070005\",\"fundName\":\"嘉实债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":1000,\"oneYear\":6.46}],\"highIncome\":[{\"fundCode\":\"400001\",\"fundName\":\"东方龙混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":100,\"oneYear\":23.61},{\"fundCode\":\"080005\",\"fundName\":\"长盛量化红利混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":1000,\"oneYear\":24.01}]},\"error\":[],\"success\":true}\",\"statusCode\":200,\"success\":true}";
+        Map map = new HashMap();
+        analysisJson(json,map);
+        Iterator<String> iter = map.entrySet().iterator();
+        while (iter.hasNext()){
+            String key = iter.next();
+            System.out.println(key + "----" + map.get(key));
         }
     }
 
@@ -336,17 +363,20 @@ public class ParamCtrl {
                             ModelMap model) throws Exception {
 
         try {
-            File file = new File(Constants.EXCLE_UPLOAD_PATH + fileName);
+//            File file = new File(Constants.EXCLE_UPLOAD_PATH + fileName);
+            String resultFileName = fileName.substring(0, fileName.indexOf(".")) + "_result"
+                    + fileName.substring(fileName.indexOf("."));
+            File resultFile = new File(Constants.EXCLE_UPLOAD_PATH + resultFileName);
             List<ExecuteResultDto> executeResultDtos = new ArrayList<>();
-            if (file.exists()) {
+            if (resultFile.exists()) {
                 // 解析excel文件
-                executeResultDtos = excelParseService.pareseResultFile(fileName);
+                executeResultDtos = excelParseService.pareseResultFile(resultFileName);
             } else {
-                model.put("errMsg", fileName + "\\u6587\\u4ef6\\u4e0d\\u5b58\\u5728"); // 文件不存在
+                model.put("errMsg", resultFileName + "\\u6587\\u4ef6\\u4e0d\\u5b58\\u5728"); // 文件不存在
                 return;
             }
             String expName = "auto-test";
-            expName += "_" + DateUtil.dateToStrByTemplate(new Date(), Constants.DATE_TEMPLATE);
+            expName += "_" + DateUtil.dateToStrByTemplate(new Date(), Constants.DATE_TEMPLATE) + "_result";
             String filename = "filename=\"" + expName + "\"";
             if (userAgent != null) {
                 userAgent = userAgent.toLowerCase();
