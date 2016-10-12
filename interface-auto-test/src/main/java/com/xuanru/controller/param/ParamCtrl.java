@@ -202,7 +202,7 @@ public class ParamCtrl {
                     }
 
                     if (netResponse != null) {
-                        log.info("result:" + JSONObject.toJSONString(netResponse));
+                        log.info("=========result:" + JSONObject.toJSONString(netResponse));
                         resultDto.setStatus_code(new Integer(netResponse.getStatusCode()).toString());
                         resultDto.setActual_result(netResponse.getRespContent());
                         if (netResponse.isSuccess()) {
@@ -318,14 +318,23 @@ public class ParamCtrl {
     }
 
     public static void main(String[] args) {
-        String json = "{\"respContent\":\"{\"data\":{\"firstInvest\":[{\"fundCode\":\"400009\",\"fundName\":\"东方稳健回报债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":5.09},{\"fundCode\":\"400013\",\"fundName\":\"东方保本混合型基金\",\"invstTypeMark\":\"保本型\",\"minAmount\":100,\"oneYear\":6.42}],\"steadyIncome\":[{\"fundCode\":\"400030\",\"fundName\":\"东方添益债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":10.71},{\"fundCode\":\"070005\",\"fundName\":\"嘉实债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":1000,\"oneYear\":6.46}],\"highIncome\":[{\"fundCode\":\"400001\",\"fundName\":\"东方龙混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":100,\"oneYear\":23.61},{\"fundCode\":\"080005\",\"fundName\":\"长盛量化红利混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":1000,\"oneYear\":24.01}]},\"error\":[],\"success\":true}\",\"statusCode\":200,\"success\":true}";
-        Map map = new HashMap();
-        analysisJson(json,map);
-        Iterator<String> iter = map.entrySet().iterator();
+//        String json = "{\"respContent\":\"{\\\"data\\\":{\\\"firstInvest\\\":[{\\\"fundCode\\\":\\\"400009\\\",\\\"fundName\\\":\\\"东方稳健回报债券\\\",\\\"invstTypeMark\\\":\\\"债券型\\\",\\\"minAmount\\\":100,\\\"oneYear\\\":5.09},{\\\"fundCode\\\":\\\"400013\\\",\\\"fundName\\\":\\\"东方保本混合型基金\\\",\\\"invstTypeMark\\\":\\\"保本型\\\",\\\"minAmount\\\":100,\\\"oneYear\\\":6.42}],\\\"steadyIncome\\\":[{\\\"fundCode\\\":\\\"400030\\\",\\\"fundName\\\":\\\"东方添益债券\\\",\\\"invstTypeMark\\\":\\\"债券型\\\",\\\"minAmount\\\":100,\\\"oneYear\\\":10.71},{\\\"fundCode\\\":\\\"070005\\\",\\\"fundName\\\":\\\"嘉实债券\\\",\\\"invstTypeMark\\\":\\\"债券型\\\",\\\"minAmount\\\":1000,\\\"oneYear\\\":6.46}],\\\"highIncome\\\":[{\\\"fundCode\\\":\\\"400001\\\",\\\"fundName\\\":\\\"东方龙混合\\\",\\\"invstTypeMark\\\":\\\"混合型\\\",\\\"minAmount\\\":100,\\\"oneYear\\\":23.61},{\\\"fundCode\\\":\\\"080005\\\",\\\"fundName\\\":\\\"长盛量化红利混合\\\",\\\"invstTypeMark\\\":\\\"混合型\\\",\\\"minAmount\\\":1000,\\\"oneYear\\\":24.01}]},\\\"error\\\":[],\\\"success\\\":true}\",\"statusCode\":200,\"success\":true}";
+        String json = "{\"data\":{\"firstInvest\":[{\"fundCode\":\"400009\",\"fundName\":\"东方稳健回报债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":5.09},{\"fundCode\":\"400013\",\"fundName\":\"东方保本混合型基金\",\"invstTypeMark\":\"保本型\",\"minAmount\":100,\"oneYear\":6.42}],\"steadyIncome\":[{\"fundCode\":\"400030\",\"fundName\":\"东方添益债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":10.71},{\"fundCode\":\"070005\",\"fundName\":\"嘉实债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":1000,\"oneYear\":6.46}],\"highIncome\":[{\"fundCode\":\"400001\",\"fundName\":\"东方龙混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":100,\"oneYear\":23.61},{\"fundCode\":\"080005\",\"fundName\":\"长盛量化红利混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":1000,\"oneYear\":24.01}]},\"error\":[],\"success\":true}";
+        Map map = (Map)net.sf.json.JSONObject.fromObject(json);
+//        analysisJson(net.sf.json.JSONObject.fromObject(json),map);
+
+        net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(json);
+        Iterator iter = jsonObject.keys();
         while (iter.hasNext()){
-            String key = iter.next();
+            Object key = iter.next();
             System.out.println(key + "----" + map.get(key));
         }
+
+//        Iterator iter = map.entrySet().iterator();
+//        while (iter.hasNext()){
+//            Object key = iter.next();
+//            System.out.println(key + "----" + map.get(key));
+//        }
     }
 
     /**
