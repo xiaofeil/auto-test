@@ -108,7 +108,8 @@ public class JsonUtil {
 
     public static void main(String[] args) {
 //        String json = "{\"respContent\":\"{\\\"data\\\":{\\\"firstInvest\\\":[{\\\"fundCode\\\":\\\"400009\\\",\\\"fundName\\\":\\\"东方稳健回报债券\\\",\\\"invstTypeMark\\\":\\\"债券型\\\",\\\"minAmount\\\":100,\\\"oneYear\\\":5.09},{\\\"fundCode\\\":\\\"400013\\\",\\\"fundName\\\":\\\"东方保本混合型基金\\\",\\\"invstTypeMark\\\":\\\"保本型\\\",\\\"minAmount\\\":100,\\\"oneYear\\\":6.42}],\\\"steadyIncome\\\":[{\\\"fundCode\\\":\\\"400030\\\",\\\"fundName\\\":\\\"东方添益债券\\\",\\\"invstTypeMark\\\":\\\"债券型\\\",\\\"minAmount\\\":100,\\\"oneYear\\\":10.71},{\\\"fundCode\\\":\\\"070005\\\",\\\"fundName\\\":\\\"嘉实债券\\\",\\\"invstTypeMark\\\":\\\"债券型\\\",\\\"minAmount\\\":1000,\\\"oneYear\\\":6.46}],\\\"highIncome\\\":[{\\\"fundCode\\\":\\\"400001\\\",\\\"fundName\\\":\\\"东方龙混合\\\",\\\"invstTypeMark\\\":\\\"混合型\\\",\\\"minAmount\\\":100,\\\"oneYear\\\":23.61},{\\\"fundCode\\\":\\\"080005\\\",\\\"fundName\\\":\\\"长盛量化红利混合\\\",\\\"invstTypeMark\\\":\\\"混合型\\\",\\\"minAmount\\\":1000,\\\"oneYear\\\":24.01}]},\\\"error\\\":[],\\\"success\\\":true}\",\"statusCode\":200,\"success\":true}";
-        String json = "{\"data\":{\"firstInvest\":[{\"fundCode\":\"400009\",\"fundName\":\"东方稳健回报债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":5.09},{\"fundCode\":\"400013\",\"fundName\":\"东方保本混合型基金\",\"invstTypeMark\":\"保本型\",\"minAmount\":100,\"oneYear\":6.42}],\"steadyIncome\":[{\"fundCode\":\"400030\",\"fundName\":\"东方添益债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":10.71},{\"fundCode\":\"070005\",\"fundName\":\"嘉实债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":1000,\"oneYear\":6.46}],\"highIncome\":[{\"fundCode\":\"400001\",\"fundName\":\"东方龙混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":100,\"oneYear\":23.61},{\"fundCode\":\"080005\",\"fundName\":\"长盛量化红利混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":1000,\"oneYear\":24.01}]},\"error\":[],\"success\":true}";
+//        String json = "{\"data\":{\"firstInvest\":[{\"fundCode\":\"400009\",\"fundName\":\"东方稳健回报债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":5.09},{\"fundCode\":\"400013\",\"fundName\":\"东方保本混合型基金\",\"invstTypeMark\":\"保本型\",\"minAmount\":100,\"oneYear\":6.42}],\"steadyIncome\":[{\"fundCode\":\"400030\",\"fundName\":\"东方添益债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":100,\"oneYear\":10.71},{\"fundCode\":\"070005\",\"fundName\":\"嘉实债券\",\"invstTypeMark\":\"债券型\",\"minAmount\":1000,\"oneYear\":6.46}],\"highIncome\":[{\"fundCode\":\"400001\",\"fundName\":\"东方龙混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":100,\"oneYear\":23.61},{\"fundCode\":\"080005\",\"fundName\":\"长盛量化红利混合\",\"invstTypeMark\":\"混合型\",\"minAmount\":1000,\"oneYear\":24.01}]},\"error\":[],\"success\":true}";
+        String json = "{\"buyerBudget\":258,\"eventType\":\"商务会议\",\"lastUpdateDatetime\":0,\"acceptReschedule\":\"N\",\"inquiryDateTime\":0,\"inquiryType\":\"NORMAL\",\"eventDuration\":24,\"buyerName\":\"nxr1\",\"eventDate\":1476806400000,\"priority\":0,\"placeName\":\"国投北楼303w@2\",\"placeId\":\"ZN7YJ0\",\"hasHotel\":\"N\",\"hasDinning\":\"N\",\"buyerId\":\"30F8D32A7EA9455CBFAC435D4A548195\",\"comments\":\"测试，请勿处理!\",\"headcount\":5,\"cityName\":\"北京\",\"buyerMobileNum\":\"18800030327\",\"originalChannel\":\"百场汇\",\"buyerIMId\":\"bch-gredje6\"}";
         System.out.println(json2Map(json));
         Map map = parseJSON2Map(json);
         Map temp = null;
@@ -116,8 +117,8 @@ public class JsonUtil {
         Iterator iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             Object key = iter.next();
-            temp = parseJSON2Map((String) map.get(key));
-            map.putAll(temp);
+//            temp = parseJSON2Map((String) map.get(key));
+//            map.putAll(temp);
             System.out.println(key + "----" + map.get(key));
         }
     }
